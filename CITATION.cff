@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "Si usas este software, por favor cita este repositorio y/o las referencias DOI incluidas."
+title: "Visualiza Coherente"
+type: software
+version: 1.0.0
+date-released: 2026-03-03
+authors:
+  - given-names: "Andrés"
+    family-names: "Calvo Espinosa"
+    orcid: "https://orcid.org/0009-0005-4079-7418"
+license: "MIT"
+keywords:
+  - "PWA"
+  - "offline"
+  - "Coherencia Universal"
+  - "Escala CU"
+  - "Sᵢ"
+  - "visualización"
+  - "OptimeFlow(s)"
+references:
+  - type: article
+    title: "Ensayo / fundamento de la Escala de Coherencia Universal (CU)"
+    authors:
+      - given-names: "Andrés"
+        family-names: "Calvo Espinosa"
+        orcid: "https://orcid.org/0009-0005-4079-7418"
+    doi: "10.5281/zenodo.18714577"
+    url: "https://doi.org/10.5281/zenodo.18714577"
+    publisher: "Zenodo"
+  - type: article
+    title: "Ensayo / referencia de Funciones Sᵢ (modelo estructural)"
+    authors:
+      - given-names: "Andrés"
+        family-names: "Calvo Espinosa"
+        orcid: "https://orcid.org/0009-0005-4079-7418"
+    doi: "10.5281/zenodo.18751249"
+    url: "https://doi.org/10.5281/zenodo.18751249"
+    publisher: "Zenodo"

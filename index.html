@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="es" data-theme="default">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="meta.title">Visualiza Coherencias · PWA</title>
+  <meta name="theme-color" content="#0b1120" id="metaThemeColor">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/img/visualizacoherencias192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/img/visualizacoherencias180.png">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== TOPBAR (compacta) ===== -->
+  <header class="topbar">
+    <div class="brand brand-title">
+      <img id="appLogo" alt="Logo" src="assets/img/logo.png" />
+      <span id="brandWord" class="brand-neon">OptimeFlow(s)</span>
+      <span class="brand-gap"></span>
+
+      <!-- Tagline (translatable) -->
+      <div id="tagline"
+     class="tagline"
+     aria-label="Visualiza Coherencias"
+     data-i18n="brand.tagline"
+     data-i18n-aria="brand.taglineAria">
+  <span class="glyph sun-i">V</span>
+  <span class="glyph sun-i">i</span>
+  <span class="glyph sun-i">s</span>
+  <span class="glyph sun-i">u</span>
+  <span class="glyph sun-i">a</span>
+  <span class="glyph sun-i">l</span>
+  <span class="glyph sun-i">i</span>
+  <span class="glyph sun-i">z</span>
+  <span class="glyph sun-i">a</span>
+  <span class="tag-gap"></span>
+  <span class="glyph orb-gold">C</span>
+  <span class="glyph orb-gold">o</span>
+  <span class="glyph orb-gold">h</span>
+  <span class="glyph orb-gold">e</span>
+  <span class="glyph orb-gold">r</span>
+  <span class="glyph orb-gold">e</span>
+  <span class="glyph orb-gold">n</span>
+  <span class="glyph orb-gold">c</span>
+  <span class="glyph orb-gold">i</span>
+  <span class="glyph orb-gold">a</span>
+  <span class="glyph orb-gold">s</span>
+</div>
+    </div>
+
+    <!-- Botón engranaje + menú desplegable -->
+    <div class="top-actions">
+      <button id="settingsBtn"
+              class="icon-btn"
+              aria-label="Opciones"
+              data-i18n-aria="nav.opciones"
+              aria-haspopup="true"
+              aria-expanded="false">
+        <!-- SVG engranaje -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 12.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L1.71 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L1.83 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.4.32.64.22l2.39-.96c.5.4 1.05.71 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.24.1.51.01.64-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM11 15.5A3.5 3.5 0 1 1 14.5 12 3.5 3.5 0 0 1 11 15.5z"/>
+        </svg>
+      </button>
+
+      <div id="settingsMenu"
+           class="settings-menu hidden"
+           role="menu"
+           aria-label="Menú"
+           data-i18n-aria="nav.menu">
+        <nav class="settings-nav" aria-label="Acciones" data-i18n-aria="nav.acciones">
+          <button class="chip" data-open="panelCU" data-i18n="nav.escala">Escala CU</button>
+          <button class="chip" data-open="panelCalc" data-i18n="nav.calc">Calculadora (paso a paso)</button>
+          <button class="chip" data-open="panelSi" data-i18n="nav.si">Funciones Sᵢ</button>
+
+          <!-- Dropdown de tema -->
+          <div class="dropdown">
+            <button class="chip" id="btnThemesMenu" aria-haspopup="true" aria-expanded="false" data-i18n="nav.temas">Temas</button>
+            <div class="menu hidden" id="themesMenu" role="menu">
+              <button class="item" data-theme="default"   role="menuitem"><span data-i18n="temas.default">Predeterminado</span><span class="swatch swatch-default"></span></button>
+              <button class="item" data-theme="ocean"     role="menuitem"><span data-i18n="temas.ocean">Océano</span><span class="swatch swatch-ocean"></span></button>
+              <button class="item" data-theme="forest"    role="menuitem"><span data-i18n="temas.forest">Bosque</span><span class="swatch swatch-forest"></span></button>
+              <button class="item" data-theme="amethyst"  role="menuitem"><span data-i18n="temas.amethyst">Amatista</span><span class="swatch swatch-amethyst"></span></button>
+              <button class="item" data-theme="sunrise"   role="menuitem"><span data-i18n="temas.sunrise">Amanecer (claro)</span><span class="swatch swatch-sunrise"></span></button>
+              <button class="item" data-theme="frost"     role="menuitem"><span data-i18n="temas.frost">Escarcha (claro)</span><span class="swatch swatch-frost"></span></button>
+              <button class="item" data-theme="sand"      role="menuitem"><span data-i18n="temas.sand">Arena (claro)</span><span class="swatch swatch-sand"></span></button>
+              <button class="item" data-theme="graphite"  role="menuitem"><span data-i18n="temas.graphite">Grafito (alto contraste)</span><span class="swatch swatch-graphite"></span></button>
+            </div>
+          </div>
+
+          <!-- Idioma -->
+          <button class="chip"
+                  data-open="langDialog"
+                  id="langBtn"
+                  data-i18n="nav.idioma"
+                  aria-label="Seleccionar idioma"
+                  data-i18n-aria="nav.idiomaAria">Idioma</button>
+
+          <div class="settings-sep" aria-hidden="true"></div>
+
+          <!-- Instalar -->
+          <button id="installBtn" class="chip ghost" hidden data-i18n="footer.instalar">Instalar PWA</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <!-- ===== /TOPBAR ===== -->
+
+  <main class="container">
+
+    <!-- Panel Auxiliar -->
+    <section class="card">
+      <h3 data-i18n="aux.titulo">Panel auxiliar</h3>
+      <div class="grid3">
+        <div>
+          <h4 data-i18n="aux.newton.titulo">Gravedad clásica (Newton)</h4>
+          <label data-i18n="aux.newton.cuerpo">Cuerpo</label>
+          <select id="newtBody" aria-label="Cuerpo (Newton)" data-i18n-aria="aria.newtonBody"></select>
+          <label data-i18n="aux.newton.masa">Masa (kg, mantisa ×10^exp)</label>
+          <input id="newtM" class="mono" />
+          <label data-i18n="aux.newton.radio">Radio (m)</label>
+          <input id="newtR" />
+          <div class="row mt8">
+            <button id="btnNewtCalc" class="btn" data-i18n="aux.newton.calc">Calcular g</button>
+            <div class="grow"></div>
+            <span id="newtG" class="mono pill">—</span>
+          </div>
+          <div class="row mt8">
+            <select id="newtApply" aria-label="Aplicar a campo CU (Newton)" data-i18n-aria="aria.applyNewton">
+              <option value="actual" data-i18n="aux.aplicar.actual">→ Observado</option>
+              <option value="min" data-i18n="aux.aplicar.min">→ Mínimo</option>
+              <option value="max" data-i18n="aux.aplicar.max">→ Máximo</option>
+            </select>
+            <button id="btnNewtToCU" class="btn small" data-i18n="aux.transmutar">Transmutar a CU</button>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="aux.gr.titulo">Relatividad general (corrección)</h4>
+          <label data-i18n="aux.gr.cuerpo">Cuerpo</label>
+          <select id="grBody" aria-label="Cuerpo (GR)" data-i18n-aria="aria.grBody"></select>
+          <label data-i18n="aux.gr.masa">Masa (kg, mantisa ×10^exp)</label>
+          <input id="grM" class="mono" />
+          <label data-i18n="aux.gr.radio">Radio (m)</label>
+          <input id="grR" />
+          <div class="row mt8">
+            <button id="btnGRCalc" class="btn" data-i18n="aux.gr.calc">Calcular g</button>
+            <div class="grow"></div>
+            <span id="grG" class="mono pill">—</span>
+          </div>
+          <div class="row tiny"><span data-i18n="aux.gr.factor">Factor relativista:</span><span id="grFactor" class="mono pill">—</span></div>
+          <div class="row mt8">
+            <select id="grApply" aria-label="Aplicar a campo CU (GR)" data-i18n-aria="aria.applyGR">
+              <option value="actual" data-i18n="aux.aplicar.actual">→ Observado</option>
+              <option value="min" data-i18n="aux.aplicar.min">→ Mínimo</option>
+              <option value="max" data-i18n="aux.aplicar.max">→ Máximo</option>
+            </select>
+            <button id="btnGRToCU" class="btn small" data-i18n="aux.transmutar">Transmutar a CU</button>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="aux.math.titulo">Matemáticas (ln)</h4>
+          <label>x</label>
+          <div class="row">
+            <input id="mathX"
+                   class="mono"
+                   inputmode="decimal"
+                   placeholder="0.000000000000010"
+                   aria-label="x (valor para ln)"
+                   data-i18n-aria="aria.mathX">
+            <button id="mathKnown" class="btn small ghost" data-i18n="aux.math.valores">Valores conocidos</button>
+          </div>
+          <div class="row mt8">
+            <button id="btnLn" class="btn" data-i18n="aux.math.ln">ln(x)</button>
+            <div class="grow"></div>
+            <span id="mathLn" class="mono pill">—</span>
+          </div>
+          <div class="row mt8">
+            <select id="mathApply" aria-label="Aplicar a campo CU (ln)" data-i18n-aria="aria.applyLn">
+              <option value="actual" data-i18n="aux.aplicar.actual">→ Observado</option>
+              <option value="min" data-i18n="aux.aplicar.min">→ Mínimo</option>
+              <option value="max" data-i18n="aux.aplicar.max">→ Máximo</option>
+            </select>
+            <button id="btnMathToCU" class="btn small" data-i18n="aux.transmutar">Transmutar a CU</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modo -->
+    <section class="card">
+      <h3 data-i18n="modo.titulo">Modo</h3>
+      <div class="row">
+        <label class="switch">
+          <input type="radio" name="mode" id="modeEP" checked>
+          <span data-i18n="modo.ep"> Estructural Puro </span>
+        </label>
+        <label class="switch">
+          <input type="radio" name="mode" id="modeNR">
+          <span data-i18n="modo.nr"> Normalizado por Referencia </span>
+        </label>
+      </div>
+      <p class="notes" data-i18n="modo.descripcion">
+        <strong>Estructural Puro (EP):</strong> signo automático (±) y sin recorte de magnitud.  
+        <strong>Normalizado por Referencia (NR):</strong> acota el cociente a [0,1] y aplica ±0.999…990; si hay desbordes sugiere redefinir el mínimo/máximo. 
+      </p>
+    </section>
+
+    <!-- Entradas -->
+    <section class="card">
+      <h3 data-i18n="entradas.titulo">Entradas</h3>
+      <div class="grid3">
+        <div>
+          <label data-i18n="entradas.obs">Valor observado</label>
+          <input id="inputActual" inputmode="decimal" placeholder="0.000000000000010" aria-label="Valor observado" data-i18n-aria="aria.inputActual">
+          <div class="under">
+            <span><span id="cntActual">0</span><span data-i18n="entradas.cifras">/16 cifras</span></span>
+            <button class="btn small" data-open-constants="actual" data-i18n="entradas.valores">Valores conocidos</button>
+            <div class="tiny">
+              <strong data-i18n="entradas.nivel">Nivel:</strong> <span id="lvlActual">—</span>
+              &middot;
+              <strong data-i18n="entradas.dec">Dec:</strong> <span id="decActual">—</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label data-i18n="entradas.min">Valor mínimo observado</label>
+          <input id="inputMin" inputmode="decimal" placeholder="0.000000000000010" aria-label="Valor mínimo" data-i18n-aria="aria.inputMin">
+          <div class="under">
+            <span><span id="cntMin">0</span><span data-i18n="entradas.cifras">/16 cifras</span></span>
+            <button class="btn small" data-open-constants="min" data-i18n="entradas.valores">Valores conocidos</button>
+            <div class="tiny">
+              <strong data-i18n="entradas.nivel">Nivel:</strong> <span id="lvlMin">—</span>
+              &middot;
+              <strong data-i18n="entradas.dec">Dec:</strong> <span id="decMin">—</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label data-i18n="entradas.max">Valor máximo observado</label>
+          <input id="inputMax" inputmode="decimal" placeholder="0.999999999999990" aria-label="Valor máximo" data-i18n-aria="aria.inputMax">
+          <div class="under">
+            <span><span id="cntMax">0</span><span data-i18n="entradas.cifras">/16 cifras</span></span>
+            <button class="btn small" data-open-constants="max" data-i18n="entradas.valores">Valores conocidos</button>
+            <div class="tiny">
+              <strong data-i18n="entradas.nivel">Nivel:</strong> <span id="lvlMax">—</span>
+              &middot;
+              <strong data-i18n="entradas.dec">Dec:</strong> <span id="decMax">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <button id="clearBtn" class="btn ghost" data-i18n="entradas.limpiar">Limpiar</button>
+        <div class="grow"></div>
+        <span class="badge ok" id="factorBadge">+ 0.999999999999990</span>
+      </div>
+      <p id="errorMsg" class="error" role="alert" aria-live="polite"></p>
+      <div id="messagesCard" class="callout" hidden>
+        <ul id="messagesList"></ul>
+      </div>
+    </section>
+
+    <!-- Resultados -->
+    <section class="card" id="resultadosPanel">
+      <h3 data-i18n="resultados.titulo">Resultados</h3>
+      <div class="grid2">
+        <div>
+          <label data-i18n="resultados.cu">Valor CU</label>
+          <div class="row">
+            <input id="cuValue" class="mono" readonly value="—" aria-label="Valor CU" data-i18n-aria="aria.cuValue">
+            <button id="copyCuBtn" class="btn small" data-i18n="resultados.copiar">Copiar</button>
+          </div>
+        </div>
+        <div>
+          <label data-i18n="resultados.cuExt">Valor CU extendido</label>
+          <div class="row">
+            <input id="cuExtValue" class="mono" readonly value="—" aria-label="Valor CU extendido" data-i18n-aria="aria.cuExtValue">
+            <button id="copyCuExtBtn" class="btn small" data-i18n="resultados.copiar">Copiar</button>
+          </div>
+        </div>
+      </div>
+      <p class="notes" data-i18n="resultados.nota">
+        En la Escala CU el <strong>0</strong> es un <em>límite asintótico inalcanzable</em>; trabajamos siempre con expresiones mínimas/máximas ±0.000…010 y ±0.999…990.
+      </p>
+      <div class="tiny" id="levelDelta">
+        <strong data-i18n="resultados.deltaTitle">Δ nivel</strong> ·
+        <span id="deltaObsMin">Obs−Min: —</span>
+        &middot;
+        <span id="deltaObsMax">Obs−Max: —</span>
+        &middot;
+        <span id="deltaRange">Min↔Max: —</span>
+      </div>
+    </section>
+
+    <!-- Sᵢ (2 cadenas) -->
+    <section class="card">
+      <h3 data-i18n="si.titulo">Funciones Sᵢ (16)</h3>
+
+      <div class="si-dual">
+        <!-- Cadena A -->
+        <div class="subcard">
+          <h4 data-i18n="si.cadenaA">Cadena A</h4>
+          <div id="siTable" class="si-table compact"></div>
+          <div class="row mt8">
+            <button id="clearSiValues" class="btn ghost" data-i18n="si.limpiar">Limpiar Sᵢ</button>
+            <div class="grow"></div>
+            <button id="templatesBtn" class="btn small" data-i18n="si.plantillas">Plantillas</button>
+            <button id="openPatterns" class="btn small" data-i18n="si.patrones">Patrones</button>
+          </div>
+          <div class="row mt8">
+            <label class="switch">
+              <input type="checkbox" id="siManual" checked>
+              <span data-i18n="si.manual"> Modo manual </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="siFlow">
+              <span data-i18n="si.algoritmico"> Modo algorítmico </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="projGraph">
+              <span data-i18n="si.proyeccion"> Proyección (gráfico) </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="autoDerive" checked>
+              <span data-i18n="si.autoderive"> Auto‑derivaciones (S₁ y S₁₆) al visualizar </span>
+            </label>
+            <button id="autoDeriveInfo" class="chip ghost" title="Información" data-i18n="si.info" data-i18n-title="comunes.infoTitle">i</button>
+            <button id="projInfo" class="chip ghost" title="Información" data-i18n="si.info" data-i18n-title="comunes.infoTitle">i</button>
+          </div>
+          <div class="row">
+            <button id="copySiCsv" class="btn small ghost" data-i18n="si.csv">Copiar Sᵢ (CSV)</button>
+            <button id="copySiJson" class="btn small ghost" data-i18n="si.json">Copiar Sᵢ (JSON)</button>
+          </div>
+        </div>
+
+        <!-- Cadena B -->
+        <div class="subcard">
+          <h4 data-i18n="si.cadenaB">Cadena B</h4>
+          <div id="siTableB" class="si-table compact"></div>
+          <div class="row mt8">
+            <button id="clearSiValuesB" class="btn ghost" data-i18n="si.limpiar">Limpiar Sᵢ</button>
+            <div class="grow"></div>
+            <button id="templatesBtnB" class="btn small" data-i18n="si.plantillas">Plantillas</button>
+            <button id="openPatternsB" class="btn small" data-i18n="si.patrones">Patrones</button>
+          </div>
+          <div class="row mt8">
+            <label class="switch">
+              <input type="checkbox" id="siManualB" checked>
+              <span data-i18n="si.manual"> Modo manual </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="siFlowB">
+              <span data-i18n="si.algoritmico"> Modo algorítmico </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="projGraphB">
+              <span data-i18n="si.proyeccion"> Proyección (gráfico) </span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="autoDeriveB" checked>
+              <span data-i18n="si.autoderive"> Auto‑derivaciones (S₁ y S₁₆) al visualizar </span>
+            </label>
+            <button id="autoDeriveInfoB" class="chip ghost" title="Información" data-i18n="si.info" data-i18n-title="comunes.infoTitle">i</button>
+            <button id="projInfoB" class="chip ghost" title="Información" data-i18n="si.info" data-i18n-title="comunes.infoTitle">i</button>
+          </div>
+          <div class="row">
+            <button id="copySiCsvB" class="btn small ghost" data-i18n="si.csv">Copiar Sᵢ (CSV)</button>
+            <button id="copySiJsonB" class="btn small ghost" data-i18n="si.json">Copiar Sᵢ (JSON)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizador estructural -->
+    <section class="card">
+      <h3 data-i18n="viz.titulo">Visualizador estructural</h3>
+
+      <div class="row mb8">
+        <label class="switch">
+          <input type="checkbox" id="invUseRoot5" checked>
+          <span data-i18n="viz.inversion"> Inversión <code>x^{1/5}</code> (clásico)</span>
+        </label>
+        <button class="chip ghost" data-open="invInfoDialog" title="Información" data-i18n="viz.info" data-i18n-title="comunes.infoTitle">i</button>
+        <span class="notes" data-i18n="viz.nota">OFF ⇒ “r puro” (sin x). Usa ↑ ↓ ← → para rotar el visor 3D.</span>
+        <div class="grow"></div>
+        <span class="muted" data-i18n="viz.dibujar">Dibujar:</span>
+        <label class="switch"><input type="checkbox" id="vizDrawA" checked><span>A</span></label>
+        <label class="switch"><input type="checkbox" id="vizDrawB"><span>B</span></label>
+      </div>
+
+      <div class="row tiny">
+        <label class="switch">
+          <input type="checkbox" id="vizFormulaMode">
+          <span data-i18n="viz.formulas"> Dibujar elipses por fórmula (ignorar Sᵢ)</span>
+        </label>
+      </div>
+
+      <div class="row mb8">
+        <span class="muted" data-i18n="viz.fondo">Fondo visores:</span>
+        <button class="chip small" data-vizbg="a" aria-label="Fondo A">A</button>
+        <button class="chip small" data-vizbg="b" aria-label="Fondo B">B</button>
+        <button class="chip small" data-vizbg="c" aria-label="Fondo C">C</button>
+        <button class="chip small" data-vizbg="d" aria-label="Fondo D">D</button>
+        <div class="grow"></div>
+      </div>
+
+      <div class="viz-layout">
+        <div class="viz-center">
+          <div class="row mb8">
+            <button id="btnVizBars" class="chip" data-i18n="viz.barras">Barras</button>
+            <button id="btnVizEllipses" class="chip ghost" data-i18n="viz.elipses">Elipses</button>
+            <button id="centerEllipses"
+                    class="chip"
+                    title="Reset pan/zoom; Shift+click: también resetea ángulos 3D"
+                    data-i18n="viz.centrar"
+                    data-i18n-title="viz.resetTitle">Centrar</button>
+            <button id="btnView2D" class="chip ghost" title="Vista 2D (frontal)" data-i18n-title="viz.view2dTitle">2D</button>
+            <button id="btnView3D" class="chip" title="Vista 3D (perspectiva)" data-i18n-title="viz.view3dTitle">3D</button>
+
+            <div class="viz-toolbar">
+              <label class="switch">
+                <input type="checkbox" id="rtOnly">
+                <span data-i18n="viz.mostrarSeleccionadas">Mostrar Sᵢ sel.</span>
+              </label>
+              <button id="rtPickBtn" class="chip small" title="Elegir Sᵢ…" data-i18n="rt.elegir" data-i18n-title="rt.elegir">Elegir Sᵢ…</button>
+              <span id="rtPickSummary" class="pill tiny">—</span>
+
+              <span class="viz-tools-sep"></span>
+
+              <span class="muted" data-i18n="viz.elipsesLabel">Elipses:</span>
+              <label class="switch"><input type="radio" name="ellFilter" id="ellFilterAll" checked><span data-i18n="viz.filtro.all">Todas</span></label>
+              <label class="switch"><input type="radio" name="ellFilter" id="ellFilterPos"><span data-i18n="viz.filtro.pos">Sólo positivas</span></label>
+              <label class="switch"><input type="radio" name="ellFilter" id="ellFilterNeg"><span data-i18n="viz.filtro.neg">Sólo negativas</span></label>
+
+              <span class="viz-tools-sep"></span>
+
+              <label class="switch"><input type="checkbox" id="ellHideLabels"><span data-i18n="viz.ocultarEtiquetas">Ocultar etiquetas Sᵢ</span></label>
+              <label class="switch"><input type="checkbox" id="ellHideA"><span data-i18n="viz.ocultarA">Ocultar elipses A</span></label>
+              <label class="switch"><input type="checkbox" id="ellHideB"><span data-i18n="viz.ocultarB">Ocultar elipses B</span></label>
+            </div>
+
+            <div class="grow"></div>
+
+            <!-- ✅ NUEVO botón Exportar video (izquierda de ¿Cómo funciona?) -->
+            <button id="btnExportVideo"
+                    class="chip ghost"
+                    data-i18n="export.video"
+                    data-i18n-aria="export.video"
+                    aria-label="Exportar video">
+              Exportar video
+            </button>
+
+            <button id="btnVizHelp" class="chip ghost" data-i18n="viz.como">¿Cómo funciona?</button>
+          </div>
+
+          <div class="viz-wrap">
+            <canvas id="vizBars"></canvas>
+          </div>
+
+          <div class="viz-wrap viz-ellipses-grid">
+            <canvas id="vizEllipses"></canvas>
+            <canvas id="vizEllipsesB" hidden></canvas>
+          </div>
+
+          <div class="viz-grid5">
+
+            <!-- 1) Ajuste en tiempo real -->
+            <section class="side-card">
+              <h4 data-i18n="rt.titulo">Ajuste en tiempo real</h4>
+
+              <div class="row">
+                <span class="muted" data-i18n="rt.cadena">Cadena</span>
+                <label class="switch"><input type="radio" name="rtChain" id="rtChainA" checked><span>A</span></label>
+                <label class="switch"><input type="radio" name="rtChain" id="rtChainB"><span>B</span></label>
+              </div>
+
+              <label data-i18n="rt.sel">Selecciona Sᵢ</label>
+              <select id="rtSelect" aria-label="Selecciona Sᵢ" data-i18n-aria="rt.sel"></select>
+
+              <label data-i18n="rt.valor">Valor (16 cifras)</label>
+              <input id="rtValue" class="mono" inputmode="decimal" placeholder="0.000000000000010" />
+
+              <label data-i18n="rt.rapido">Ajuste rápido</label>
+              <input id="rtSlider" type="range" min="-1" max="1" step="0.0001" value="0" />
+
+              <div class="row mt8">
+                <button id="rtApply" class="btn" data-i18n="comunes.aplicar">Aplicar</button>
+                <button id="rtRevert" class="btn ghost" data-i18n="rt.revertir">Revertir</button>
+              </div>
+              <p class="notes" data-i18n="rt.nota">Se refleja en Sᵢ y en ambos visores. Puedes revertir al valor previo.</p>
+            </section>
+
+            <!-- 2) Animación -->
+            <section class="side-card">
+              <h4 data-i18n="anim.titulo">ANIMACIÓN (Rotación por Sᵢ)</h4>
+
+              <label data-i18n="anim.velocidad">Velocidad (°/s)</label>
+              <div class="row">
+                <input id="rotSpeed" type="range" min="0" max="360" step="1" value="0">
+                <input id="rotSpeedNum" class="mono" style="width:96px" inputmode="decimal" value="0">
+                <span class="muted" data-i18n="anim.direccion">Dirección</span>
+                <label class="switch"><input type="radio" name="rotDir" id="rotDirCW" checked><span>↻</span></label>
+                <label class="switch"><input type="radio" name="rotDir" id="rotDirCCW"><span>↺</span></label>
+              </div>
+              <div class="row tiny">
+                <label class="switch"><input type="checkbox" id="autoRotBySi"><span data-i18n="anim.auto">Autoasignar (según Sᵢ)</span></label>
+              </div>
+
+              <label class="mt8" data-i18n="anim.pitch">Pitch (°)</label>
+              <div class="row">
+                <input id="rotPitch" type="range" min="-90" max="90" step="1" value="0">
+                <input id="rotPitchNum" class="mono" style="width:96px" inputmode="decimal" value="0">
+              </div>
+
+              <label class="mt8" data-i18n="anim.yaw">Yaw (°)</label>
+              <div class="row">
+                <input id="rotYaw" type="range" min="-180" max="180" step="1" value="0">
+                <input id="rotYawNum" class="mono" style="width:96px" inputmode="decimal" value="0">
+              </div>
+
+              <div class="row mt8">
+                <button id="rotApplyOne" class="btn small" data-i18n="anim.aplicarUno">Aplicar (Sᵢ actual)</button>
+                <button id="rotApplyAll" class="btn small ghost" data-i18n="anim.aplicarTodas">Aplicar a todas</button>
+                <div class="grow"></div>
+                <button id="animPause" class="btn" data-i18n="anim.pausar">Pausar todo</button>
+                <button id="animResume" class="btn ghost" data-i18n="anim.continuar">Continuar</button>
+              </div>
+
+              <div class="row mt8">
+                <button id="animSlower" class="btn small" data-i18n="anim.ralentizar">Ralentizar</button>
+                <span id="speedFactor" class="pill mono">×1.00</span>
+              </div>
+              <div class="row mt8">
+                <button id="animFaster" class="btn small" data-i18n="anim.acelerar">Acelerar</button>
+                <input id="speedFactorNum" class="mono" style="width:96px" inputmode="decimal" value="1.00">
+                <button id="speedFactorApply" class="btn small" data-i18n="anim.aplicarFactor">Aplicar factor</button>
+              </div>
+            </section>
+
+            <!-- 3) Bolitas -->
+            <section class="side-card ep-balls">
+              <h4 data-i18n="balls.titulo">Bolitas (por Sᵢ)</h4>
+
+              <label data-i18n="balls.cantidad">Cantidad</label>
+              <input id="ballsCount" type="number" min="0" max="64" step="1" value="0" style="width:96px">
+
+              <div class="row tiny">
+                <label class="switch"><input type="checkbox" id="autoBallsBySi"><span data-i18n="anim.auto">Autoasignar (según Sᵢ)</span></label>
+              </div>
+
+              <label class="mt8" data-i18n="balls.velocidad">Velocidad (°/s)</label>
+              <div class="row">
+                <input id="ballsSpeed" type="range" min="0" max="720" step="1" value="90">
+                <input id="ballsSpeedNum" class="mono" style="width:96px" inputmode="decimal" value="90">
+              </div>
+              <div class="row tiny balls-dir-row">
+                <span class="muted" data-i18n="anim.direccion">Dirección</span>
+                <label class="switch"><input type="radio" name="ballsDir" id="ballsDirCW" checked><span>↻</span></label>
+                <label class="switch"><input type="radio" name="ballsDir" id="ballsDirCCW"><span>↺</span></label>
+              </div>
+
+              <div class="row mt8">
+                <button id="ballsApplyOne" class="btn small" data-i18n="anim.aplicarUno">Aplicar (Sᵢ actual)</button>
+                <button id="ballsApplyAll" class="btn small ghost" data-i18n="anim.aplicarTodas">Aplicar a todas</button>
+              </div>
+            </section>
+
+            <!-- 4) Filtros -->
+            <section class="side-card ep-filters">
+              <h4 data-i18n="filters.titulo">Visor (bolitas) — filtros</h4>
+
+              <div class="row">
+                <span class="muted" data-i18n="filters.mini">Mini‑elipses a dibujar:</span>
+                <label class="switch"><input type="radio" name="patFilter" id="patFilterAll" checked><span data-i18n="viz.filtro.all">Todas</span></label>
+                <label class="switch"><input type="radio" name="patFilter" id="patFilterPos"><span data-i18n="viz.filtro.pos">Sólo positivas</span></label>
+                <label class="switch"><input type="radio" name="patFilter" id="patFilterNeg"><span data-i18n="viz.filtro.neg">Sólo negativas</span></label>
+                <div class="grow"></div>
+                <label class="switch"><input type="checkbox" id="patHideLabels"><span data-i18n="filters.ocultarEtiquetas"> Ocultar etiquetas Sᵢ (bolitas) </span></label>
+                <label class="switch"><input type="checkbox" id="patHideA2"><span data-i18n="filters.ocultarA"> Ocultar (bolitas) A </span></label>
+                <label class="switch"><input type="checkbox" id="patHideB2"><span data-i18n="filters.ocultarB"> Ocultar (bolitas) B </span></label>
+              </div>
+
+              <label class="mt8" data-i18n="filters.patronOptional">Patrón para bolitas (opcional)</label>
+              <select id="ballsPatternSelect"></select>
+              <div class="row tiny">
+                <label data-i18n="filters.bolita">Bolita</label>
+                <select id="ballIndexSelect"></select>
+                <label class="switch"><input type="checkbox" id="ballApplyAll"><span data-i18n="comunes.aplicarTodas">Aplicar a todas</span></label>
+              </div>
+              <div class="row mt8">
+                <button id="ballsPatternApplyOne" class="btn small" data-i18n="filters.asignar">Asignar patrón</button>
+                <button id="ballsPatternClearOne" class="btn small ghost" data-i18n="filters.quitar">Quitar patrón</button>
+                <div class="grow"></div>
+                <label class="switch"><input type="checkbox" id="autoPatternMotion"><span data-i18n="filters.autoMovimiento">Auto‑movimiento según Patrón</span></label>
+              </div>
+            </section>
+
+            <!-- 5) Manual -->
+            <section class="side-card ep-manual">
+              <h4 data-i18n="manual.titulo">Patrón · orientación manual (bolita)</h4>
+
+              <label data-i18n="manual.velocidad">Velocidad mini‑elipses (°/s)</label>
+              <div class="row">
+                <input id="patSpeed" type="range" min="0" max="720" step="1" value="90">
+                <input id="patSpeedNum" class="mono" style="width:96px" inputmode="decimal" value="90">
+                <label class="switch"><input type="radio" name="patDir" id="patDirCW" checked><span>↻</span></label>
+                <label class="switch"><input type="radio" name="patDir" id="patDirCCW"><span>↺</span></label>
+              </div>
+
+              <label class="mt8" data-i18n="manual.pitchYaw">Pitch (°) · Yaw (°)</label>
+              <div class="row">
+                <input id="patPitch" type="range" min="-90" max="90" step="1" value="0">
+                <input id="patPitchNum" class="mono" style="width:96px" inputmode="decimal" value="0">
+                <input id="patYaw" type="range" min="-180" max="180" step="1" value="0">
+                <input id="patYawNum" class="mono" style="width:96px" inputmode="decimal" value="0">
+              </div>
+
+              <div class="row mt8">
+                <button id="patApplyOne" class="btn small" data-i18n="manual.aplicar">Aplicar (bolita seleccionada)</button>
+                <button id="patApplyAllBalls" class="btn small ghost" data-i18n="manual.aplicarTodas">Aplicar a todas las bolitas</button>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- === Barra fija inferior === -->
+  <footer class="bottombar" role="contentinfo" aria-label="Información legal y créditos" data-i18n-aria="legal.footerAria">
+    <div class="footer-left">
+      <span class="muted footer-credits" data-i18n="legal.creditos">OptimeFlow(s) • 2025 • Andrés Calvo Espinosa</span>
+    </div>
+
+    <div class="footer-center">
+      <button class="footer-logo-btn"
+              id="footerCoherenceBtn"
+              type="button"
+              data-open="coherenceDialog"
+              aria-label="Coherencia Universal"
+              data-i18n-aria="coherence.title"
+              title="Coherencia Universal"
+              data-i18n-title="coherence.title">
+        <img class="footer-logo"
+             src="assets/img/visualizacoherencias192.png"
+             alt="Visualiza Coherente">
+      </button>
+    </div>
+
+    <div class="footer-right">
+      <button class="chip ghost"
+              type="button"
+              data-open="privacyDialog"
+              data-i18n="legal.privacidad">Política de privacidad</button>
+
+      <button class="chip ghost"
+              type="button"
+              data-open="licenseDialog"
+              data-i18n="legal.licencia">Licencia MIT</button>
+    </div>
+  </footer>
+
+<!-- MODALES -->
+  <!-- Panel Coherencia Universal (footer centro) -->
+  <dialog id="coherenceDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="coherence.title">Coherencia Universal</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="notes" data-i18n="coherence.text"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button>
+    </div>
+  </dialog>
+
+  <dialog id="panelCU" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="cu.titulo">Escala CU (resumen didáctico)</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+  <p data-i18n="cu.p1"></p>
+  <p data-i18n="cu.p2"></p>
+  <p data-i18n="cu.p3"></p>
+  <p data-i18n="cu.p4"></p>
+  <p data-i18n="cu.p5"></p>
+  <p data-i18n="cu.p6"></p>
+  <p class="notes" data-i18n="cu.doi"></p>
+</div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="panelCalc" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="calc.titulo">Calculadora (paso a paso)</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+  <ol class="steps">
+    <li data-i18n="calc.s1"></li>
+    <li data-i18n="calc.s2"></li>
+    <li data-i18n="calc.s3"></li>
+    <li data-i18n="calc.s4"></li>
+    <li data-i18n="calc.s5"></li>
+    <li data-i18n="calc.s6"></li>
+    <li data-i18n="calc.s7"></li>
+  </ol>
+
+  <p class="notes" data-i18n="calc.note"></p>
+  <p class="notes" data-i18n="calc.doi"></p>
+</div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="panelSi" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="si.modal.titulo">Funciones Sᵢ</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+  <p data-i18n="si.modal.p1"></p>
+  <p data-i18n="si.modal.p2"></p>
+  <p data-i18n="si.modal.p3"></p>
+
+  <ul class="steps">
+    <li data-i18n="si.modal.b1"></li>
+    <li data-i18n="si.modal.b2"></li>
+    <li data-i18n="si.modal.b3"></li>
+  </ul>
+
+  <p class="notes" data-i18n="si.modal.doi"></p>
+</div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="themesDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="temas.titulo">Temas</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="theme-grid">
+        <label class="theme-card"><input type="radio" name="theme" value="default"><span data-i18n="temas.default">Predeterminado</span><span class="swatch swatch-default"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="ocean"><span data-i18n="temas.ocean">Océano</span><span class="swatch swatch-ocean"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="forest"><span data-i18n="temas.forest">Bosque</span><span class="swatch swatch-forest"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="amethyst"><span data-i18n="temas.amethyst">Amatista</span><span class="swatch swatch-amethyst"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="sunrise"><span data-i18n="temas.sunrise">Amanecer (claro)</span><span class="swatch swatch-sunrise"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="frost"><span data-i18n="temas.frost">Escarcha (claro)</span><span class="swatch swatch-frost"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="sand"><span data-i18n="temas.sand">Arena (claro)</span><span class="swatch swatch-sand"></span></label>
+        <label class="theme-card"><input type="radio" name="theme" value="graphite"><span data-i18n="temas.graphite">Grafito (alto contraste)</span><span class="swatch swatch-graphite"></span></label>
+      </div>
+      <p class="notes" data-i18n="temas.nota">El tema se guarda en este dispositivo.</p>
+    </div>
+    <div class="modal-foot">
+      <div class="grow"></div>
+      <button id="applyTheme" class="btn" data-i18n="comunes.aplicar">Aplicar</button>
+    </div>
+  </dialog>
+
+  <dialog id="constantsDialog" class="modal">
+    <div class="modal-head">
+      <h3 id="constantsTitle" data-i18n="const.titulo">Valores conocidos</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div id="constantsList" class="modal-body cols"></div>
+    <div class="modal-foot constants-foot">
+      <div class="row">
+        <button id="constantsPrevPage" class="chip" aria-label="Anterior" data-i18n-aria="comunes.anterior">◀</button>
+        <span id="constantsPageLabel" class="muted">Página 1/2</span>
+        <button id="constantsNextPage" class="chip" aria-label="Siguiente" data-i18n-aria="comunes.siguiente">▶</button>
+      </div>
+      <div class="grow"></div>
+      <button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button>
+    </div>
+  </dialog>
+
+  <dialog id="ellipseDialog" class="modal">
+    <div class="modal-head"><h3 id="ellipseTitle">Sᵢ</h3><button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button></div>
+    <div id="ellipseBody" class="modal-body"></div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="selectionDialog" class="modal">
+    <div class="modal-head"><h3 data-i18n="sel.titulo">Selección</h3><button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button></div>
+    <div id="selectionBody" class="modal-body"></div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="templatesDialog" class="modal">
+    <div class="modal-head"><h3 data-i18n="plantillas.titulo">Plantillas</h3><button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button></div>
+    <div id="templatesList" class="modal-body cols"></div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="patternsDialog" class="modal">
+    <div class="modal-head"><h3 data-i18n="patrones.titulo">Patrones</h3><button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button></div>
+    <div class="modal-body">
+      <div class="row">
+        <input id="patternName" placeholder="Nombre del patrón (opcional)" data-i18n-placeholder="patrones.placeholder">
+        <button id="btnSavePatternNow" class="btn small" data-i18n="patrones.guardar">Guardar ahora</button>
+      </div>
+      <div id="patternsList" class="mt8"></div>
+      <div class="row mt8">
+        <button id="btnExportCSV" class="btn small ghost" data-i18n="patrones.csv">Exportar CSV</button>
+        <button id="btnExportJSON" class="btn small ghost" data-i18n="patrones.json">Exportar JSON</button>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <dialog id="rtPickDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="rt.elegir">Elegir Sᵢ…</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="row mb8">
+        <button id="rtPickAll" class="chip small" data-i18n="rt.todos">Todos</button>
+        <button id="rtPickNone" class="chip small" data-i18n="rt.ninguno">Ninguno</button>
+      </div>
+      <div id="rtPickWrap"></div>
+    </div>
+    <div class="modal-foot">
+      <div class="grow"></div>
+      <button id="rtPickApply" class="btn" data-i18n="comunes.aplicar">Aplicar</button>
+    </div>
+  </dialog>
+
+  <dialog id="invInfoDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="inv.titulo">Inversión: x^{1/5} vs r puro</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div id="invInfoBody" class="modal-body">
+      <p data-i18n="inv.p1"><strong>¿Qué hace <code>x^{1/5}</code>?</strong> proyecta el valor deseado como <em>x</em>∈(0,1] usando <code>x^{1/5}</code> en la familia Sᵢ (contracción fractal suave).</p>
+      <p data-i18n="inv.p2"><strong>OFF (“r puro”):</strong> busca un <em>r</em> tal que <code>f(r)≈valor</code> sin imponer <em>x</em>.</p>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button></div>
+  </dialog>
+
+  <!-- ✅ NUEVO: Exportar video -->
+  <dialog id="exportDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="export.title">Exportar video (20s)</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <span class="muted" data-i18n="export.chain">Cadena</span>
+        <label class="switch"><input type="radio" name="exportChain" value="A" checked><span>A</span></label>
+        <label class="switch"><input type="radio" name="exportChain" value="B"><span>B</span></label>
+        <label class="switch"><input type="radio" name="exportChain" value="AB"><span data-i18n="export.chain.ab">A+B</span></label>
+      </div>
+
+      <div class="row mt8">
+        <span class="muted" data-i18n="export.quality">Calidad</span>
+        <label class="switch"><input type="radio" name="exportQuality" value="low" checked><span data-i18n="export.quality.low">Baja</span></label>
+        <label class="switch"><input type="radio" name="exportQuality" value="mid"><span data-i18n="export.quality.mid">Media</span></label>
+        <label class="switch"><input type="radio" name="exportQuality" value="high"><span data-i18n="export.quality.high">Alta</span></label>
+      </div>
+
+      <div class="mt8">
+        <label data-i18n="export.audio">Audio (opcional)</label>
+        <input id="exportAudio" type="file" accept="audio/*">
+        <div class="tiny muted" data-i18n="export.audio.note">El audio se recorta o se repite para encajar en 20s.</div>
+      </div>
+
+      <p id="exportStatus" class="notes mt8" aria-live="polite"></p>
+      <progress id="exportProgress" max="20" value="0" style="width:100%" hidden></progress>
+    </div>
+
+    <div class="modal-foot">
+      <button id="exportStartBtn" class="btn" data-i18n="export.start">Exportar 20s</button>
+      <div class="grow"></div>
+      <button class="btn ghost" data-close data-i18n="comunes.cerrar">Cerrar</button>
+    </div>
+  </dialog>
+
+  <!-- Idioma -->
+  <dialog id="langDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="idioma.titulo">Idioma</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="lang-grid">
+        <label class="lang-card"><input type="radio" name="lang" value="es"><span>Español</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="en"><span>English</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="fr"><span>Français</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="it"><span>Italiano</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="de"><span>Deutsch</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="pt-BR"><span>Português (BR)</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="ca"><span>Català</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="ru"><span>Русский</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="hi"><span>हिन्दी</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="zh"><span>中文</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="ja"><span>日本語</span></label>
+        <label class="lang-card"><input type="radio" name="lang" value="ko"><span>한국어</span></label>
+      </div>
+      <p class="notes" data-i18n="idioma.nota">Al aplicar, toda la interfaz cambiará al idioma seleccionado.</p>
+    </div>
+    <div class="modal-foot">
+      <div class="grow"></div>
+      <button id="applyLang" class="btn" data-i18n="comunes.aplicar">Aplicar</button>
+    </div>
+  </dialog>
+
+  <dialog id="privacyDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="privacy.titulo">Política de privacidad</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body" data-i18n="privacy.cuerpo"></div>
+    <div class="modal-foot">
+      <button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button>
+    </div>
+  </dialog>
+
+  <dialog id="licenseDialog" class="modal">
+    <div class="modal-head">
+      <h3 data-i18n="license.titulo">Licencia MIT</h3>
+      <button class="chip ghost" data-close aria-label="Cerrar" data-i18n-aria="comunes.cerrar">✕</button>
+    </div>
+    <div class="modal-body" style="white-space:pre-wrap" data-i18n="license.cuerpo"></div>
+    <div class="modal-foot">
+      <button class="btn" data-close data-i18n="comunes.cerrar">Cerrar</button>
+    </div>
+  </dialog>
+
+  <!-- ===== Menú engranaje (JS mínimo y aislado) ===== -->
+  <script>
+    (function () {
+      const settingsBtn = document.getElementById("settingsBtn");
+      const settingsMenu = document.getElementById("settingsMenu");
+
+      if (!settingsBtn || !settingsMenu) return;
+
+      const themesBtn = document.getElementById("btnThemesMenu");
+      const themesMenu = document.getElementById("themesMenu");
+
+      function closeMenu() {
+        settingsMenu.classList.add("hidden");
+        settingsBtn.setAttribute("aria-expanded", "false");
+
+        if (themesMenu) themesMenu.classList.add("hidden");
+        if (themesBtn) themesBtn.setAttribute("aria-expanded", "false");
+      }
+
+      function openMenu() {
+        settingsMenu.classList.remove("hidden");
+        settingsBtn.setAttribute("aria-expanded", "true");
+      }
+
+      function toggleMenu() {
+        if (settingsMenu.classList.contains("hidden")) openMenu();
+        else closeMenu();
+      }
+
+      settingsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      document.addEventListener("pointerdown", (e) => {
+        if (settingsMenu.classList.contains("hidden")) return;
+        const t = e.target;
+        if (settingsBtn.contains(t) || settingsMenu.contains(t)) return;
+        closeMenu();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+      });
+
+      settingsMenu.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        if (themesBtn && btn === themesBtn) return;
+
+        if (btn.hasAttribute("data-open") || btn.id === "installBtn" || btn.hasAttribute("data-theme")) {
+          closeMenu();
+        }
+      });
+
+      window.addEventListener("resize", closeMenu);
+    })();
+  </script>
+
+  <!-- Service worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(()=>{});
+    }
+  </script>
+
+  <script src="app.js" defer></script>
+
+  <!-- NUEVO: i18n (JSON) -->
+  <script src="i18n.js" defer></script>
+
+  <script src="escala.js" defer></script>
+  <script src="16si.js" defer></script>
+
+  <!-- ✅ NUEVO: exportación de video -->
+  <script src="export.js" defer></script>
+</body>
+</html>

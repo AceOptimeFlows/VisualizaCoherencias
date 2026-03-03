@@ -1,0 +1,36 @@
+{
+  "title": "Visualiza Coherente",
+  "upload_type": "software",
+  "description": "<p><strong>Visualiza Coherente</strong> is a local-first, installable PWA for computing and exploring <strong>CU</strong> values (16 digits + extended precision) and visualizing structural profiles using <strong>Sᵢ functions</strong> (dual chain A/B) with bars and 2D/3D ellipses.</p><p>No servers, no trackers: it runs fully in the browser and supports offline usage via a Service Worker.</p>",
+  "creators": [
+    {
+      "name": "Calvo Espinosa, Andrés",
+      "orcid": "0009-0005-4079-7418",
+      "affiliation": "OptimeFlow(s)"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "PWA",
+    "offline",
+    "Coherencia Universal",
+    "CU",
+    "S_i",
+    "visualization",
+    "OptimeFlow(s)"
+  ],
+  "notes": "This repository is a static web app (HTML/CSS/JS). Host it on any HTTPS-capable static server (GitHub Pages, Vercel, etc.).",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.18714577",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article"
+    },
+    {
+      "identifier": "10.5281/zenodo.18751249",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article"
+    }
+  ]
+}
