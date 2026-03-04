@@ -10,7 +10,7 @@
     incrementa APP_VERSION.
 */
 
-const APP_VERSION = 'version.1.0';
+const APP_VERSION = 'version_1.0';
 const CACHE_NAME  = `visualiza-coherente-v${APP_VERSION}`;
 
 // Archivos esenciales para arrancar offline.
@@ -27,16 +27,26 @@ const PRECACHE_URLS = [
   './manifest.webmanifest',
 
   // Iconos
-  './assets/img/normalizacoherente180.png',
-  './assets/img/normalizacoherente192.png',
-  './assets/img/normalizacoherente512.png',
+  './assets/img/visualizacoherencias180.png',
+  './assets/img/visualizacoherencias192.png',
+  './assets/img/visualizacoherencias512.png',
 
   // (Opcional) Logo si existe
   './assets/img/logo.png',
 
   // (Opcional) i18n si existe
   './i18n/es.json',
-  './i18n/en.json'
+  './i18n/en.json',
+  './i18n/pt-br.json',
+  './i18n/fr.json',
+  './i18n/it.json',
+  './i18n/de.json',
+  './i18n/ko.json',
+  './i18n/ja.json',
+  './i18n/zh.json',
+  './i18n/hi.json',
+  './i18n/ru.json',
+  './i18n/cat.json'
 ];
 
 async function precacheSafe() {
