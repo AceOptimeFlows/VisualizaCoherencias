@@ -533,6 +533,7 @@ button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select
 }
 
 .footer-credits{
+  display:inline-block; /* ✅ permite 2 líneas en móvil sin romper PC */
   font-size:12px;
   color:var(--muted);
   line-height:1.15;
@@ -540,6 +541,17 @@ button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select
   overflow:hidden;
   text-overflow:ellipsis;
   max-width:100%;
+}
+
+/* ✅ Nuevas piezas del crédito */
+.footer-credit-top,
+.footer-credit-author{
+  display:inline;
+}
+
+/* En PC: pone el separador " • " entre top y autor */
+.footer-credit-author::before{
+  content:" • ";
 }
 
 /* Link del autor (ORCID) dentro del texto traducido */
@@ -562,7 +574,6 @@ button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select
 .footer-center{
   justify-self:center;
 }
-
 
 /* Boton del icono central (con borde/brillo) */
 .footer-logo-btn{
@@ -636,7 +647,19 @@ button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select
     gap:4px;
   }
 
-  .footer-credits{ max-width:44vw; }
+  .footer-credits{
+    max-width:44vw;
+    white-space:normal; /* ✅ permite que el nombre sea 2ª línea si lo necesita */
+  }
+
+  /* ✅ MÓVIL: el autor baja debajo SIN separador */
+  .footer-credit-author{
+    display:block;
+    margin-top:2px;
+  }
+  .footer-credit-author::before{
+    content:"";
+  }
 
   /* ✅ IMPORTANTE: que los chips del footer NO se salgan */
   .footer-right .chip{
