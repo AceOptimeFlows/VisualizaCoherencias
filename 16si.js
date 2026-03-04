@@ -936,45 +936,84 @@ function toggleEllCanvases(){
 }
 
 /* Barras: dibuja A y/o B */
+/* Barras: dibuja A y/o B */
 function drawBars(){
   if(!cvsBars||!ctxBars) return;
+
   setupHiDPI(cvsBars,ctxBars);
   const rc=cvsBars.getBoundingClientRect(), W=rc.width, H=rc.height, ctx=ctxBars;
   ctx.clearRect(0,0,W,H);
+
   const s=getComputedStyle(document.documentElement);
   const c1=s.getPropertyValue('--viz1').trim()||"#0b1020";
   const c2=s.getPropertyValue('--viz2').trim()||"#0a132d";
   const textCol=s.getPropertyValue('--text').trim()||"#111111";
   const lineCol=s.getPropertyValue('--line').trim()||"#24304f";
-  const grad=ctx.createLinearGradient(0,0,0,H); grad.addColorStop(0,c1); grad.addColorStop(1,c2); ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,c1); grad.addColorStop(1,c2);
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
   const axisY=Math.round(H/2), N=16;
   const drawA=!!vizDrawA?.checked, drawB=!!vizDrawB?.checked;
-  const bw = (drawA && drawB) ? 14 : 24;
-  const gap=Math.max(32, Math.round((W-16*(drawA&&drawB? (bw*2+6) : bw))/17));
-  const totalWidth= N*(drawA&&drawB? (bw*2+6) : bw) + (N-1)*gap;
-  const left=Math.round((W-totalWidth)/2);
-  const escala=Math.min(120,(H/2-30)/1);
 
-  ctx.strokeStyle=lineCol; ctx.beginPath(); ctx.moveTo(10,axisY+0.5); ctx.lineTo(W-10,axisY+0.5); ctx.stroke();
-  ctx.font="12px ui-monospace,monospace"; ctx.textAlign="center";
+  // ✅ Layout "por slots": nunca se recorta en móvil
+  const margin = 10;
+  const innerW = Math.max(10, W - margin*2);
+  const slot = innerW / N;
+
+  let bw = 10, barGap = 0;
+  if (drawA && drawB){
+    barGap = clamp(Math.round(slot*0.15), 2, 6);
+    bw = clamp(Math.round((slot - barGap) / 2), 3, 14);
+  }else{
+    bw = clamp(Math.round(slot*0.65), 4, 24);
+  }
+
+  const escala = Math.min(120, Math.max(12, (H/2 - 30)));
+
+  ctx.strokeStyle=lineCol;
+  ctx.beginPath();
+  ctx.moveTo(margin,axisY+0.5);
+  ctx.lineTo(W-margin,axisY+0.5);
+  ctx.stroke();
+
+  const fontSize = clamp(Math.round(slot*0.60), 8, 12);
+  ctx.font=`${fontSize}px ui-monospace,monospace`;
+  ctx.textAlign="center";
+  ctx.textBaseline="top";
 
   const valsA = drawA? getVizValuesForBarsOf("A") : null;
   const valsB = drawB? getVizValuesForBarsOf("B") : null;
 
   for(let i=0;i<N;i++){
-    const xbase=left + i*( (drawA&&drawB? (bw*2+6):bw) + gap );
+    const centerX = margin + (i + 0.5) * slot;
+
     if (drawA){
-      const v=valsA[i]||0; const h=Math.max(-axisY+30, Math.min(axisY-30, v*escala));
-      const x=xbase; const y=v>=0?axisY-h:axisY;
-      ctx.fillStyle=v>=0?"#22c55e":"#ef4444"; ctx.fillRect(x,y,bw,Math.abs(h));
+      const v=valsA[i]||0;
+      const h=Math.max(-axisY+30, Math.min(axisY-30, v*escala));
+      const x = (drawA && drawB)
+        ? (centerX - (bw*2 + barGap)/2)
+        : (centerX - bw/2);
+      const y = v>=0 ? axisY-h : axisY;
+      ctx.fillStyle=v>=0?"#22c55e":"#ef4444";
+      ctx.fillRect(Math.round(x), Math.round(y), bw, Math.abs(h));
     }
+
     if (drawB){
-      const v=valsB[i]||0; const h=Math.max(-axisY+30, Math.min(axisY-30, v*escala));
-      const x=xbase + (drawA? (bw+6):0); const y=v>=0?axisY-h:axisY;
-      ctx.fillStyle=v>=0?"#2dd4bf":"#f97316"; ctx.fillRect(x,y,bw,Math.abs(h));
+      const v=valsB[i]||0;
+      const h=Math.max(-axisY+30, Math.min(axisY-30, v*escala));
+      const x0 = (drawA && drawB)
+        ? (centerX - (bw*2 + barGap)/2)
+        : (centerX - bw/2);
+      const x = (drawA && drawB) ? (x0 + bw + barGap) : x0;
+      const y = v>=0 ? axisY-h : axisY;
+      ctx.fillStyle=v>=0?"#2dd4bf":"#f97316";
+      ctx.fillRect(Math.round(x), Math.round(y), bw, Math.abs(h));
     }
-    ctx.fillStyle=textCol; ctx.fillText(SI[i].tag, xbase + (drawA&&drawB? (bw+3): bw/2), axisY+16);
+
+    ctx.fillStyle=textCol;
+    ctx.fillText(SI[i].tag, centerX, axisY + 6 + fontSize);
   }
 }
 // Valor "ancla" cuando está activo el modo Fórmulas (ignora Sᵢ reales).
@@ -1804,18 +1843,38 @@ function hitEllipseAt(x,y, E){
   }
   return false;
 }
+// ✅ Reutilizable: selección/click (sirve para mouse y para tap táctil)
+function handleEllipseSelect(chain, x, y, shiftKey){
+  const cache = (chain==="B") ? ellipsesCacheB : ellipsesCacheA;
+  const sel   = (chain==="B") ? selectionB : selectionA;
+
+  let hit=-1, data=null;
+  for(let k=cache.length-1;k>=0;k--){
+    if (hitEllipseAt(x,y,cache[k])){ hit=cache[k].i; data=cache[k]; break; }
+  }
+
+  if (hit>=0){
+    if (shiftKey){
+      sel.has(hit)?sel.delete(hit):sel.add(hit);
+      openSelectionPanel(chain);
+    }else{
+      sel.clear(); sel.add(hit);
+      openEllipseInfoPanel(data, chain);
+    }
+    drawEllipses();
+  }else{
+    sel.clear();
+    drawEllipses();
+  }
+}
 cvsEllA?.addEventListener('click',e=>{
   if (suppressNextClickA){ suppressNextClickA=false; return; }
-  const rc=cvsEllA.getBoundingClientRect(); const x=e.clientX-rc.left, y=e.clientY-rc.top;
-  let hit=-1, data=null;
-  for(let k=ellipsesCacheA.length-1;k>=0;k--){ if (hitEllipseAt(x,y,ellipsesCacheA[k])){ hit=ellipsesCacheA[k].i; data=ellipsesCacheA[k]; break; } }
-  if (hit>=0){
-    if (e.shiftKey){ selectionA.has(hit)?selectionA.delete(hit):selectionA.add(hit); openSelectionPanel("A"); }
-    else { selectionA.clear(); selectionA.add(hit); openEllipseInfoPanel(data,"A"); }
-    drawEllipses();
-  } else { selectionA.clear(); drawEllipses(); }
+  const rc=cvsEllA.getBoundingClientRect();
+  const x=e.clientX-rc.left, y=e.clientY-rc.top;
+  handleEllipseSelect("A", x, y, e.shiftKey);
 });
 cvsEllA?.addEventListener('mousedown', e=>{
+  if (e?.sourceCapabilities?.firesTouchEvents) return;
   if (e.button!==0) return;
   if (viewMode==="2D") return;
 
@@ -1988,16 +2047,12 @@ function drawEllipsesB(){
 /* Interacción B */
 cvsEllB?.addEventListener('click',e=>{
   if (suppressNextClickB){ suppressNextClickB=false; return; }
-  const rc=cvsEllB.getBoundingClientRect(); const x=e.clientX-rc.left, y=e.clientY-rc.top;
-  let hit=-1, data=null;
-  for(let k=ellipsesCacheB.length-1;k>=0;k--){ if (hitEllipseAt(x,y,ellipsesCacheB[k])){ hit=ellipsesCacheB[k].i; data=ellipsesCacheB[k]; break; } }
-  if (hit>=0){
-    if (e.shiftKey){ selectionB.has(hit)?selectionB.delete(hit):selectionB.add(hit); openSelectionPanel("B"); }
-    else { selectionB.clear(); selectionB.add(hit); openEllipseInfoPanel(data,"B"); }
-    drawEllipses();
-  } else { selectionB.clear(); drawEllipses(); }
+  const rc=cvsEllB.getBoundingClientRect();
+  const x=e.clientX-rc.left, y=e.clientY-rc.top;
+  handleEllipseSelect("B", x, y, e.shiftKey);
 });
 cvsEllB?.addEventListener('mousedown', e=>{
+  if (e?.sourceCapabilities?.firesTouchEvents) return;
   if (e.button!==0) return;
   if (viewMode==="2D") return;
 
@@ -2021,7 +2076,191 @@ cvsEllB?.addEventListener('wheel',e=>{
   ellPanXB += (before[0]-after[0])*ellScaleB; ellPanYB += (before[1]-after[1])*ellScaleB;
   drawEllipsesB();
 },{passive:false});
+/* ===========================
+   ✅ Touch controls (móvil)
+   - 1 dedo: rotar (pitch/yaw)
+   - 2 dedos: pan
+   - Pinch: zoom
+   - Tap: seleccionar elipse
+   =========================== */
+function bindTouchOrbitControls(canvas, chain){
+  if(!canvas) return;
+  if(canvas.__touchOrbitBound) return;
+  canvas.__touchOrbitBound = true;
 
+  // Asegura que el navegador no se “robe” el gesto para scroll/zoom de página
+  canvas.style.touchAction = "none";
+
+  const state = {
+    pts: new Map(),      // pointerId -> {x,y}
+    mode: "none",        // 'one' | 'pinch' | 'none'
+    startX:0, startY:0,
+    startRotX:0, startRotY:0,
+    startPanX:0, startPanY:0,
+    startScale:1,
+    startDist:1,
+    moved:false,
+    downT:0
+  };
+
+  const getRotX  = ()=> (chain==="A" ? ellRotXA  : ellRotXB);
+  const getRotY  = ()=> (chain==="A" ? ellRotYA  : ellRotYB);
+  const setRotX  = (v)=>{ if(chain==="A") ellRotXA=v; else ellRotXB=v; };
+  const setRotY  = (v)=>{ if(chain==="A") ellRotYA=v; else ellRotYB=v; };
+
+  const getPanX  = ()=> (chain==="A" ? ellPanXA  : ellPanXB);
+  const getPanY  = ()=> (chain==="A" ? ellPanYA  : ellPanYB);
+  const setPanX  = (v)=>{ if(chain==="A") ellPanXA=v; else ellPanXB=v; };
+  const setPanY  = (v)=>{ if(chain==="A") ellPanYA=v; else ellPanYB=v; };
+
+  const getScale = ()=> (chain==="A" ? ellScaleA : ellScaleB);
+  const setScale = (v)=>{ if(chain==="A") ellScaleA=v; else ellScaleB=v; };
+
+  // Suprime el click sintético tras un gesto táctil (en touch suele tardar más que en mouse)
+  const suppressClick = ()=>{
+    if(chain==="A"){
+      suppressNextClickA = true;
+      setTimeout(()=>suppressNextClickA=false, 450);
+    }else{
+      suppressNextClickB = true;
+      setTimeout(()=>suppressNextClickB=false, 450);
+    }
+  };
+
+  const dist = (a,b)=> Math.hypot(a.x-b.x, a.y-b.y);
+
+  function startPinchFromCurrent(){
+    const pts = Array.from(state.pts.values());
+    if (pts.length<2) return;
+    const p1=pts[0], p2=pts[1];
+    state.mode = "pinch";
+    state.startDist  = Math.max(1, dist(p1,p2));
+    state.startScale = getScale();
+    state.startPanX  = getPanX();
+    state.startPanY  = getPanY();
+    state.moved = true;
+  }
+
+  canvas.addEventListener("pointerdown", (e)=>{
+    if (e.pointerType!=="touch") return;
+    if (viewMode==="2D") return;
+
+    state.downT = performance.now();
+
+    try{ canvas.setPointerCapture(e.pointerId); }catch(_){}
+    state.pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+    if (state.pts.size===1){
+      state.mode="one";
+      state.startX=e.clientX; state.startY=e.clientY;
+      state.startRotX=getRotX(); state.startRotY=getRotY();
+      state.moved=false;
+    }else{
+      startPinchFromCurrent();
+    }
+
+    e.preventDefault();
+  }, {passive:false});
+
+  canvas.addEventListener("pointermove", (e)=>{
+    if (e.pointerType!=="touch") return;
+    if (!state.pts.has(e.pointerId)) return;
+    if (viewMode==="2D") return;
+
+    state.pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+    if (state.mode==="one" && state.pts.size===1){
+      const dx = e.clientX - state.startX;
+      const dy = e.clientY - state.startY;
+      if (Math.hypot(dx,dy) > 6) state.moved=true;
+
+      const sens = 0.008; // rad/px (ajuste “natural”)
+      let rx = state.startRotX + dy*sens;
+      let ry = state.startRotY + dx*sens;
+      rx = clamp(rx, -1.4, 1.4);
+      ry = clamp(ry, -Math.PI, Math.PI);
+      setRotX(rx); setRotY(ry);
+
+    }else if (state.pts.size>=2){
+      const pts = Array.from(state.pts.values());
+      const p1=pts[0], p2=pts[1];
+
+      const newDist = Math.max(1, dist(p1,p2));
+      const ratio   = newDist / state.startDist;
+      const newScale= clamp(state.startScale * ratio, 0.1, 50);
+
+      // Midpoint (ancla de zoom/pan)
+      const midX = (p1.x+p2.x)/2;
+      const midY = (p1.y+p2.y)/2;
+
+      const rc = canvas.getBoundingClientRect();
+      const mx = midX - rc.left;
+      const my = midY - rc.top;
+      const cx = rc.width*0.5;
+      const cy = rc.height*0.5;
+
+      // mundo bajo el dedo (en el estado inicial)
+      const wx = (mx - cx - state.startPanX) / state.startScale;
+      const wy = (my - cy - state.startPanY) / state.startScale;
+
+      // pan nuevo para mantener el ancla estable
+      const panX = mx - cx - wx*newScale;
+      const panY = my - cy - wy*newScale;
+
+      setScale(newScale);
+      setPanX(panX);
+      setPanY(panY);
+
+      state.moved = true;
+    }
+
+    e.preventDefault();
+  }, {passive:false});
+
+  function onEnd(e){
+    if (e.pointerType!=="touch") return;
+    if (state.pts.has(e.pointerId)) state.pts.delete(e.pointerId);
+
+    if (state.pts.size===0){
+      const dt = performance.now() - (state.downT||0);
+
+      if (!state.moved && dt < 350){
+        // ✅ Tap => selección
+        const rc = canvas.getBoundingClientRect();
+        const x = e.clientX - rc.left;
+        const y = e.clientY - rc.top;
+        suppressClick();
+        handleEllipseSelect(chain, x, y, false);
+      }else{
+        // gesto => evita click fantasma
+        suppressClick();
+      }
+
+      state.mode="none";
+      state.moved=false;
+
+    }else if (state.pts.size===1){
+      // Si queda 1 dedo tras pinch, continuamos como rotación desde aquí
+      const p = Array.from(state.pts.values())[0];
+      state.mode="one";
+      state.startX=p.x; state.startY=p.y;
+      state.startRotX=getRotX(); state.startRotY=getRotY();
+      state.moved=true;
+
+    }else{
+      startPinchFromCurrent();
+    }
+
+    e.preventDefault();
+  }
+
+  canvas.addEventListener("pointerup", onEnd, {passive:false});
+  canvas.addEventListener("pointercancel", onEnd, {passive:false});
+}
+
+// Activación (A y B)
+bindTouchOrbitControls(cvsEllA, "A");
+bindTouchOrbitControls(cvsEllB, "B");
 /* Centro / reset (afecta a ambos) */
 const centerBtn = document.getElementById('centerEllipses')
                   || document.getElementById('resetEllipses')
