@@ -10,7 +10,7 @@
     incrementa APP_VERSION.
 */
 
-const APP_VERSION = '_v.1.0.0_03-03-2026';
+const APP_VERSION = '_v.1.0.0_04-03-2026';
 const CACHE_NAME  = `visualiza-coherente-v${APP_VERSION}`;
 
 // Archivos esenciales para arrancar offline.
