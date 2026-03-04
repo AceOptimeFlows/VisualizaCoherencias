@@ -118,9 +118,9 @@ The runtime loader is `i18n.js`.
 └─ assets/
    └─ img/
       ├─ logo.png
-      ├─ normalizacoherente180.png
-      ├─ normalizacoherente192.png
-      └─ normalizacoherente512.png
+      ├─ visualizacoherencias180.png
+      ├─ visualizacoherencias192.png
+      └─ visualizacoherencias512.png
 ```
 
 ---
@@ -244,9 +244,9 @@ Cuando publiques una versión nueva, cambia el nombre de caché en `sw.js`.
 └─ assets/
    └─ img/
       ├─ logo.png
-      ├─ normalizacoherente180.png
-      ├─ normalizacoherente192.png
-      └─ normalizacoherente512.png
+      ├─ visualizacoherencias180.png
+      ├─ visualizacoherencias192.png
+      └─ visualizacoherencias512.png
 ```
 
 ---

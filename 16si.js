@@ -199,7 +199,110 @@ function buildSiTable(){
 function buildSiTableB(){
   buildSiTableGeneric(siTableB, sNamesB, sValuesB, {chain:"B", flow:siFlowB, runFlow:runAlgorithmicFillB});
 }
+/* ===========================
+   ✅ i18n: refresco en vivo de UI dinámica (Sᵢ)
+   - La tabla Sᵢ se genera por JS, no por data-i18n, así que translatePage() no la actualiza.
+   - i18n.js dispara: window.dispatchEvent(new CustomEvent("i18n:change",{detail:{lang}}))
+   - Aquí actualizamos textos/placeholder/botones sin recargar.
+   =========================== */
 
+// helper: t(key) con fallback si la key no existe en el JSON
+function tOr(key, fallback, params){
+  try{
+    const v = (typeof t === "function") ? t(key, params) : "";
+    return (!v || v === key) ? fallback : v;
+  }catch(_){
+    return fallback;
+  }
+}
+
+function refreshImpulseCheckboxLabel(chain){
+  const cb = (chain === "B") ? siKickS9B : siKickS9;
+  if (!cb) return;
+
+  const lab = cb.closest("label.switch");
+  const sp  = lab?.querySelector("span");
+  if (!sp) return;
+
+  // Opcional: si algún día agregas la key "si.kickS9" en tus JSON,
+  // se traducirá solo. Si no existe, cae a ES.
+  sp.textContent = ` ${tOr("si.kickS9", "Impulso desde S₉")} `;
+}
+
+function refreshSiTableI18n(chain){
+  const table = (chain === "B") ? siTableB : siTable;
+  if (!table) return;
+
+  table.querySelectorAll(".si-row").forEach(row=>{
+    const idx = parseInt(row.dataset.index || "0", 10) || 0;
+
+    // Botón info
+    const infoBtn = row.querySelector("button.si-info");
+    if (infoBtn){
+      infoBtn.title = tOr("comunes.infoTitle", "Información");
+      infoBtn.textContent = tOr("si.info", "i");
+    }
+
+    // Tag (Sᵢ · Nombre)
+    const tagEl = row.querySelector(".si-tag");
+    if (tagEl){
+      tagEl.textContent = `${SI[idx].tag} · ${siNameFor(chain, idx)}`;
+    }
+
+    // Placeholders
+    const inputs = row.querySelectorAll("input");
+    const inputName = inputs[0];
+    const inputVal  = inputs[1];
+    if (inputName) inputName.placeholder = tOr("si.placeholder.customName", "Nombre personalizado…");
+    if (inputVal)  inputVal.placeholder  = tOr("si.placeholder.valueExample", "0.000000000000010");
+
+    // Botones asignar (los 2 botones "ghost" del row)
+    const assignBtns = row.querySelectorAll("button.btn.small.ghost");
+    if (assignBtns[0]) assignBtns[0].textContent = tOr("si.assignCU", "Asignar CU");
+    if (assignBtns[1]) assignBtns[1].textContent = tOr("si.assignCUExt", "Asignar CU ext.");
+  });
+}
+
+function refreshSiDynamicI18n(){
+  // Tablas A/B
+  refreshSiTableI18n("A");
+  refreshSiTableI18n("B");
+
+  // Checkbox “Impulso desde S₉” (si existe)
+  refreshImpulseCheckboxLabel("A");
+  refreshImpulseCheckboxLabel("B");
+
+  // Templates (se construyen por JS con t())
+  if (typeof buildTemplates === "function") buildTemplates();
+
+  // RT (opciones incluyen “Sᵢ · Nombre”)
+  if (typeof fillRtSelect === "function") fillRtSelect();
+  if (typeof updateRtPickSummary === "function") updateRtPickSummary();
+
+  // Si el diálogo de elegir Sᵢ está abierto, rehacer la lista
+  const rtDlg = document.getElementById("rtPickDialog");
+  if (rtDlg && rtDlg.open && typeof buildRtPickList === "function"){
+    buildRtPickList();
+  }
+
+  // “Sin patrón” en el select de patrones depende de t()
+  if (typeof refreshBallsPatternOptions === "function") refreshBallsPatternOptions();
+
+  // Si el modal de patrones está abierto, refrescarlo (textos como “Cargar/Eliminar/…”)
+  const patDlg = document.getElementById("patternsDialog");
+  if (patDlg && patDlg.open && typeof refreshPatternsUI === "function"){
+    refreshPatternsUI();
+  }
+
+  // Canvas: por si hay texto dibujado con t()
+  if (typeof drawBars === "function") drawBars();
+  if (typeof drawEllipses === "function") drawEllipses();
+}
+
+// Hook: se dispara al aplicar idioma (i18n.js)
+window.addEventListener("i18n:change", () => {
+  refreshSiDynamicI18n();
+});
 /* ===========================
    Info botones (FIX robusto)
    - Funciona aunque translatePage() o renders reemplacen los nodos
