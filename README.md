@@ -227,7 +227,29 @@ Cuando publiques una versión nueva, cambia el nombre de caché en `sw.js`.
 
 ### Estructura del proyecto
 
-(igual que arriba)
+
+```text
+/
+├─ index.html
+├─ styles.css
+├─ app.js
+├─ escala.js
+├─ 16si.js
+├─ i18n.js
+├─ sw.js
+├─ manifest.webmanifest
+├─ i18n/
+│  ├─ es.json
+│  └─ ... other languages
+└─ assets/
+   └─ img/
+      ├─ logo.png
+      ├─ normalizacoherente180.png
+      ├─ normalizacoherente192.png
+      └─ normalizacoherente512.png
+```
+
+---
 
 ---
 
