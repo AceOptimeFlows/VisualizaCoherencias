@@ -241,9 +241,21 @@ html,body{
   .orb-gold{ font-size: 1.45rem; }
 }
 @media (max-width: 760px){
-  /* Compacto total: ocultamos tagline para que quede como Normaliza Coherente */
-  .topbar .tagline{ display:none; }
-  .brand-gap{ display:none; }
+  /* ✅ MÓVIL: queremos ver "Visualiza Coherencias" (tagline) y NO "OptimeFlow(s)" */
+  #brandWord{ display:none; }         /* Oculta OptimeFlow(s) */
+  .brand-gap{ display:none; }         /* Quita el hueco entre palabra y tagline */
+
+  /* La tagline tiene muchas letras en spans: quitamos el gap para que quepa */
+  .topbar .tagline{
+    display:flex;
+    gap:0px;
+    white-space:nowrap;
+  }
+
+  /* Un poco más compacto en móvil */
+  .sun-i{ font-size: 1.05rem; }
+  .orb-gold{ font-size: 1.25rem; }
+  .tag-gap{ width:clamp(6px, 2vw, 12px); }
 }
 
 /* === Menú desplegable (tema) === */
@@ -767,6 +779,10 @@ body{ padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 
   /* footer: un poco más de margen para los botones */
   .footer-right .chip{ max-width:52vw; }
+  /* Ultra-móvil: aún más compacto el rótulo */
+  .topbar .tagline{ gap:0px; }
+  .sun-i{ font-size: 0.95rem; }
+  .orb-gold{ font-size: 1.12rem; }
 }
 
 /* Extra: modales más cómodos en móvil (no afecta a PC) */
