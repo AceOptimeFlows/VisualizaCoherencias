@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "Não foram encontrados os canvases de elipses.",
   "export.error.generic": "Não foi possível iniciar a exportação.",
   "coherence.title": "Coerência Universal",
+   "help.autoderive.p1": "Quando ativado, o app recalcula automaticamente S₁ e S₁₆ para visualização/cópia, mantendo a cadeia “fechada” e coerente.",
+  "help.autoderive.li1": "Útil se você estiver explorando padrões e quiser que o fechamento seja automático.",
+  "help.autoderive.li2": "Se você quiser fixar S₁ ou S₁₆ manualmente, desative este interruptor.",
+
+  "help.projection.p1": "A projeção transforma a cadeia Sᵢ em uma representação visual (barras e elipses) para inspecionar estrutura, simetrias, sinal e magnitudes.",
+  "help.projection.li1": "<strong>Barras:</strong> resumo rápido do sinal e da magnitude relativa.",
+  "help.projection.li2": "<strong>Elipses:</strong> projeção geométrica por família usando inversão (r) e, se aplicável, x.",
+  "help.projection.li3": "Aplique filtros e seleção no visualizador para mostrar apenas algumas Sᵢ.",
   "coherence.text": "Que esta obra sirva como agradecimento e como compromisso: pensar, sentir e agir na mesma direção, sem \"adornos\"; seguir criando com ética, com alegria e com respeito por tudo o que nos conecta."
 }

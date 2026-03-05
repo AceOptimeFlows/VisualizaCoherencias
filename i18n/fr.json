@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "Impossible de trouver les canvas d’ellipses.",
   "export.error.generic": "Impossible de démarrer l’export.",
   "coherence.title": "Cohérence Universelle",
+   "help.autoderive.p1": "Lorsqu’elle est activée, l’app recalcule automatiquement S₁ et S₁₆ pour l’affichage/la copie, en maintenant la chaîne « fermée » et cohérente.",
+  "help.autoderive.li1": "Utile si tu explores des motifs et que tu veux une fermeture automatique.",
+  "help.autoderive.li2": "Si tu veux fixer S₁ ou S₁₆ manuellement, désactive cet interrupteur.",
+
+  "help.projection.p1": "La projection transforme la chaîne Sᵢ en une représentation visuelle (barres et ellipses) pour inspecter la structure, les symétries, le signe et les magnitudes.",
+  "help.projection.li1": "<strong>Barres :</strong> résumé rapide du signe et de la magnitude relative.",
+  "help.projection.li2": "<strong>Ellipses :</strong> projection géométrique par famille utilisant l’inversion (r) et, le cas échéant, x.",
+  "help.projection.li3": "Applique des filtres et une sélection depuis le visualiseur pour n’afficher que certaines Sᵢ.",
   "coherence.text": "Que cette œuvre serve de gratitude et d’engagement : penser, ressentir et agir dans la même direction, sans « ornements » ; continuer à créer avec éthique, avec joie et avec respect pour tout ce qui nous relie."
 }

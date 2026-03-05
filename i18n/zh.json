@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "未找到椭圆画布。",
   "export.error.generic": "无法开始导出。",
   "coherence.title": "通用相干性",
+  "help.autoderive.p1": "启用后，应用会在查看/复制时自动重新计算 S₁ 和 S₁₆，使链条保持“闭合”且一致。",
+  "help.autoderive.li1": "当你在探索模式并希望闭合自动完成时很有用。",
+  "help.autoderive.li2": "如果你想手动固定 S₁ 或 S₁₆，请关闭此开关。",
+
+  "help.projection.p1": "投影会将 Sᵢ 链转换为可视化表示（柱状条与椭圆），用于检查结构、对称性、符号与幅值。",
+  "help.projection.li1": "<strong>柱状条：</strong>快速概览符号与相对幅值。",
+  "help.projection.li2": "<strong>椭圆：</strong>按族进行几何投影，使用反演（r），并在适用时加入 x。",
+  "help.projection.li3": "在可视化器中应用筛选与选择，仅显示部分 Sᵢ。",
   "coherence.text": "愿此作成为感恩与承诺：不加“装饰”，让思考、感受与行动指向同一方向；以伦理、喜悦与对一切联结之物的尊重，继续创造。"
 }

@@ -422,5 +422,13 @@
   "export.error.canvasMissing": "Could not find the ellipse canvases.",
   "export.error.generic": "Could not start the export.",
   "coherence.title": "Universal Coherence",
+  "help.autoderive.p1": "When enabled, the app automatically recalculates S₁ and S₁₆ for viewing/copying, keeping the chain “closed” and coherent.",
+  "help.autoderive.li1": "Useful if you’re exploring patterns and want the closure to be automatic.",
+  "help.autoderive.li2": "If you want to lock S₁ or S₁₆ manually, turn this switch off.",
+
+  "help.projection.p1": "Projection transforms the Sᵢ chain into a visual representation (bars and ellipses) to inspect structure, symmetries, sign, and magnitudes.",
+  "help.projection.li1": "<strong>Bars:</strong> quick summary of sign and relative magnitude.",
+  "help.projection.li2": "<strong>Ellipses:</strong> geometric projection by family using inversion (r) and, if applicable, x.",
+  "help.projection.li3": "Apply filters and selection from the viewer to show only some Sᵢ.",
   "coherence.text": "May this work serve as gratitude and as a commitment: to think, feel, and act in the same direction, without \"ornaments\"; to keep creating with ethics, with joy, and with respect for everything that connects us."
 }

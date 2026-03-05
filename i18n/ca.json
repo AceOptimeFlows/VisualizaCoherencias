@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "No s’han trobat els canvases d’el·lipses.",
   "export.error.generic": "No s’ha pogut iniciar l’exportació.",
   "coherence.title": "Coherència Universal",
+  "help.autoderive.p1": "Quan està activat, l’app recalcula automàticament S₁ i S₁₆ per a la visualització/còpia, mantenint la cadena “tancada” i coherent.",
+  "help.autoderive.li1": "Útil si estàs explorant patrons i vols que el tancament sigui automàtic.",
+  "help.autoderive.li2": "Si vols fixar S₁ o S₁₆ manualment, desactiva aquest interruptor.",
+
+  "help.projection.p1": "La projecció transforma la cadena Sᵢ en una representació visual (barres i el·lipses) per inspeccionar estructura, simetries, signe i magnituds.",
+  "help.projection.li1": "<strong>Barres:</strong> resum ràpid del signe i la magnitud relativa.",
+  "help.projection.li2": "<strong>El·lipses:</strong> projecció geomètrica per família usant inversió (r) i, si escau, x.",
+  "help.projection.li3": "Aplica filtres i selecció des del visualitzador per mostrar només algunes Sᵢ.",
   "coherence.text": "Que aquesta obra serveixi com a agraïment i com a compromís: pensar, sentir i actuar en la mateixa direcció, sense «adorns»; continuar creant amb ètica, amb alegria i amb respecte per tot allò que ens connecta."
 }

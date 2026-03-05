@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "타원 캔버스를 찾을 수 없습니다.",
   "export.error.generic": "내보내기를 시작할 수 없습니다.",
   "coherence.title": "보편 코히어런스",
+   "help.autoderive.p1": "활성화하면 앱이 표시/복사를 위해 S₁과 S₁₆을 자동으로 재계산하여, 체인이 “닫힌” 상태로 일관되고 coherent하게 유지됩니다.",
+  "help.autoderive.li1": "패턴을 탐색하면서 닫힘(클로저)을 자동으로 하고 싶을 때 유용합니다.",
+  "help.autoderive.li2": "S₁ 또는 S₁₆을 수동으로 고정하고 싶다면 이 스위치를 끄세요.",
+
+  "help.projection.p1": "프로젝션은 Sᵢ 체인을 시각적 표현(막대와 타원)으로 변환하여 구조, 대칭, 부호, 크기를 점검할 수 있게 합니다.",
+  "help.projection.li1": "<strong>막대:</strong> 부호와 상대적 크기를 빠르게 요약합니다.",
+  "help.projection.li2": "<strong>타원:</strong> 반전(inversion) (r)을 사용한 계열별 기하학적 프로젝션이며, 해당되는 경우 x도 적용합니다.",
+  "help.projection.li3": "뷰어에서 필터와 선택을 적용해 일부 Sᵢ만 표시하세요.",
   "coherence.text": "이 작품이 감사와 약속이 되기를: “장식” 없이 같은 방향으로 생각하고, 느끼고, 행동하기; 윤리와 기쁨, 그리고 우리를 연결하는 모든 것에 대한 존중 속에서 계속 창조하기."
 }

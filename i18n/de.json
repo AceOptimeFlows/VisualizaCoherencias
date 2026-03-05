@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "Ellipse‑Canvases wurden nicht gefunden.",
   "export.error.generic": "Export konnte nicht gestartet werden.",
   "coherence.title": "Universelle Kohärenz",
+  "help.autoderive.p1": "Wenn aktiviert, berechnet die App S₁ und S₁₆ für Anzeige/Kopieren automatisch neu und hält die Kette „geschlossen“ und kohärent.",
+  "help.autoderive.li1": "Nützlich, wenn du Muster erkundest und den Abschluss automatisch haben willst.",
+  "help.autoderive.li2": "Wenn du S₁ oder S₁₆ manuell festlegen möchtest, deaktiviere diesen Schalter.",
+
+  "help.projection.p1": "Die Projektion verwandelt die Sᵢ-Kette in eine visuelle Darstellung (Balken und Ellipsen), um Struktur, Symmetrien, Vorzeichen und Größen zu prüfen.",
+  "help.projection.li1": "<strong>Balken:</strong> schnelle Zusammenfassung von Vorzeichen und relativer Größe.",
+  "help.projection.li2": "<strong>Ellipsen:</strong> geometrische Projektion nach Familie mit Inversion (r) und – falls zutreffend – x.",
+  "help.projection.li3": "Wende Filter und Auswahl im Viewer an, um nur einige Sᵢ anzuzeigen.",
   "coherence.text": "Möge dieses Werk als Dank und als Verpflichtung dienen: zu denken, zu fühlen und in dieselbe Richtung zu handeln, ohne \"Ornamente\"; weiter zu schaffen – mit Ethik, mit Freude und mit Respekt für alles, was uns verbindet."
 }

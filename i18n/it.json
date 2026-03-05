@@ -423,5 +423,13 @@
   "export.error.canvasMissing": "Impossibile trovare i canvas delle ellissi.",
   "export.error.generic": "Impossibile avviare l’esportazione.",
   "coherence.title": "Coerenza Universale",
+   "help.autoderive.p1": "Quando è attivo, l’app ricalcola automaticamente S₁ e S₁₆ per la visualizzazione/copia, mantenendo la catena “chiusa” e coerente.",
+  "help.autoderive.li1": "Utile se stai esplorando pattern e vuoi che la chiusura sia automatica.",
+  "help.autoderive.li2": "Se vuoi fissare S₁ o S₁₆ manualmente, disattiva questo interruttore.",
+
+  "help.projection.p1": "La proiezione trasforma la catena Sᵢ in una rappresentazione visiva (barre ed ellissi) per ispezionare struttura, simmetrie, segno e magnitudini.",
+  "help.projection.li1": "<strong>Barre:</strong> riepilogo rapido di segno e magnitudine relativa.",
+  "help.projection.li2": "<strong>Ellissi:</strong> proiezione geometrica per famiglia usando l’inversione (r) e, se applicabile, x.",
+  "help.projection.li3": "Applica filtri e selezione dal visualizzatore per mostrare solo alcune Sᵢ.",
   "coherence.text": "Che quest’opera serva come gratitudine e come impegno: pensare, sentire e agire nella stessa direzione, senza \"ornamenti\"; continuare a creare con etica, con gioia e con rispetto per tutto ciò che ci connette."
 }
