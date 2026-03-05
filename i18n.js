@@ -31,10 +31,175 @@
     "zh-hant": "zh"
   };
 
+  // ✅ Compatibilidad con nombres de archivo (por si en algún momento
+  // el JSON no coincide exactamente con el código de idioma)
+  // - pt-BR.json / pt-br.json
+  // - ca.json / cat.json
+  const JSON_FILE_CANDIDATES = {
+    "pt-BR": ["pt-BR", "pt-br"],
+    "ca": ["ca", "cat"]
+  };
+
   const _cache = new Map();
   let _lang = DEFAULT_LANG;
   let _fallback = {};
   let _dict = {};
+
+  /* ===========================
+     PWA Install (botón Instalar)
+     - Chromium: beforeinstallprompt -> prompt()
+     - iOS Safari: instrucciones (no hay prompt)
+     - Oculta el botón si ya está instalada (standalone)
+     =========================== */
+
+  let _deferredInstallPrompt = null;
+
+  function isStandalone() {
+    try {
+      if (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) return true;
+    } catch (_) {}
+    // iOS Safari
+    try {
+      if ("standalone" in navigator && navigator.standalone) return true;
+    } catch (_) {}
+    return false;
+  }
+
+  function isIOS() {
+    const ua = String(navigator.userAgent || "");
+    const platform = String(navigator.platform || "");
+    const maxTP = Number(navigator.maxTouchPoints || 0);
+
+    // iPadOS 13+ se hace pasar por MacIntel pero tiene touch points
+    const iDevice = /iPad|iPhone|iPod/i.test(ua);
+    const iPadOS13Plus = platform === "MacIntel" && maxTP > 1;
+    return iDevice || iPadOS13Plus;
+  }
+
+  function getInstallBtn() {
+    return document.getElementById("installBtn");
+  }
+
+  function setInstallBtnHidden(hidden) {
+    const btn = getInstallBtn();
+    if (!btn) return;
+    btn.hidden = !!hidden;
+  }
+
+  function setInstallBtnDisabled(disabled) {
+    const btn = getInstallBtn();
+    if (!btn) return;
+    btn.disabled = !!disabled;
+    try { btn.setAttribute("aria-disabled", String(!!disabled)); } catch (_) {}
+  }
+
+  function getMsg(key, fallback) {
+    // Si existe la clave en los JSON, úsala; si no, usa fallback.
+    const v = t(key);
+    return (v === key) ? String(fallback || "") : String(v);
+  }
+
+  function updateInstallUI() {
+    const btn = getInstallBtn();
+    if (!btn) return;
+
+    // Si ya está instalada, ocultamos.
+    if (isStandalone()) {
+      setInstallBtnHidden(true);
+      return;
+    }
+
+    // Si NO está instalada, mostramos el botón siempre.
+    // - En Chromium, si hay beforeinstallprompt guardado, al click saldrá el prompt.
+    // - En iOS, al click mostramos instrucciones.
+    // - En otros, mostramos ayuda indicando el menú del navegador.
+    setInstallBtnHidden(false);
+    setInstallBtnDisabled(false);
+  }
+
+  async function handleInstallClick() {
+    // Si ya está instalada, no hacemos nada.
+    if (isStandalone()) {
+      updateInstallUI();
+      return;
+    }
+
+    // iOS: no existe beforeinstallprompt → instrucciones.
+    if (!_deferredInstallPrompt) {
+      if (isIOS()) {
+        const msg = getMsg(
+          "pwa.ios.help",
+          "En iPhone/iPad: abre esta web en Safari → botón Compartir → \"Añadir a pantalla de inicio\"."
+        );
+        alert(msg);
+        return;
+      }
+
+      // Otros navegadores sin prompt (o aún no disponible)
+      const msg = getMsg(
+        "pwa.install.notReady",
+        "La instalación aún no está disponible aquí.\n\n- Asegúrate de abrir la web en HTTPS (o localhost).\n- Si es tu primera visita, recarga la página y vuelve a intentarlo.\n- En Chrome/Edge suele aparecer \"Instalar app\" en el menú del navegador."
+      );
+      alert(msg);
+      return;
+    }
+
+    setInstallBtnDisabled(true);
+
+    try {
+      // Debe ejecutarse directamente por gesto del usuario.
+      _deferredInstallPrompt.prompt();
+
+      // Algunos navegadores exponen userChoice.
+      if (_deferredInstallPrompt.userChoice) {
+        try {
+          await _deferredInstallPrompt.userChoice;
+        } catch (_) {}
+      }
+    } catch (_) {
+      // Ignorar
+    } finally {
+      // El evento solo sirve una vez.
+      _deferredInstallPrompt = null;
+      setInstallBtnDisabled(false);
+      updateInstallUI();
+    }
+  }
+
+  function initInstallUI() {
+    if (window.__pwaInstallBooted) return;
+    window.__pwaInstallBooted = true;
+
+    const btn = getInstallBtn();
+    if (btn) {
+      btn.addEventListener("click", handleInstallClick);
+    }
+
+    updateInstallUI();
+
+    // Reaccionar si cambia el modo de pantalla (p.ej. instalación / abrir standalone)
+    try {
+      if (window.matchMedia) {
+        const mm = window.matchMedia("(display-mode: standalone)");
+        const onChange = () => updateInstallUI();
+        if (mm.addEventListener) mm.addEventListener("change", onChange);
+        else if (mm.addListener) mm.addListener(onChange);
+      }
+    } catch (_) {}
+  }
+
+  // Captura temprana del evento (Chromium)
+  window.addEventListener("beforeinstallprompt", (e) => {
+    try { e.preventDefault(); } catch (_) {}
+    _deferredInstallPrompt = e;
+    updateInstallUI();
+  });
+
+  // Cuando se instala
+  window.addEventListener("appinstalled", () => {
+    _deferredInstallPrompt = null;
+    updateInstallUI();
+  });
 
   function normalizeLang(input) {
     let lang = String(input || "").trim();
@@ -79,19 +244,31 @@
     const code = normalizeLang(lang);
     if (_cache.has(code)) return _cache.get(code);
 
-    const url = `${BASE_PATH}/${code}.json`;
+    function fetchJson(url) {
+      try {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, false); // sync (asegura que t() funcione antes de otros scripts)
+        xhr.send(null);
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const parsed = JSON.parse(xhr.responseText);
+          return (parsed && typeof parsed === "object") ? parsed : null;
+        }
+      } catch (_) {}
+      return null;
+    }
+
+    const candidates = (JSON_FILE_CANDIDATES[code] ? [...JSON_FILE_CANDIDATES[code]] : [code]);
+    // también probamos en minúsculas por si el server es case-insensitive en local,
+    // pero case-sensitive en producción.
+    const lower = code.toLowerCase();
+    if (!candidates.includes(lower)) candidates.push(lower);
+
     let obj = null;
-
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", url, false); // sync (asegura que t() funcione antes de otros scripts)
-      xhr.send(null);
-
-      if (xhr.status >= 200 && xhr.status < 300) {
-        obj = JSON.parse(xhr.responseText);
-      }
-    } catch (_) {
-      obj = null;
+    for (const file of candidates) {
+      const url = `${BASE_PATH}/${file}.json`;
+      obj = fetchJson(url);
+      if (obj) break;
     }
 
     if (!obj || typeof obj !== "object") obj = {};
@@ -208,6 +385,9 @@
         dialog.close?.();
       });
     }
+
+    // PWA install
+    initInstallUI();
   }
 
   // Exponer API global (y sobreescribir la antigua si existía)
